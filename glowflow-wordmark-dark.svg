@@ -1,0 +1,17 @@
+<svg width="1280" height="320" viewBox="0 0 1280 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="textgrad" x1="388" y1="58" x2="742" y2="258" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4DE8FF"/>
+      <stop offset="0.55" stop-color="#9D4DFF"/>
+      <stop offset="1" stop-color="#FF7A00"/>
+    </linearGradient>
+  </defs>
+  <rect x="20" y="28" width="1240" height="264" rx="44" fill="#0B0F19"/>
+  <rect x="72" y="56" width="208" height="208" rx="52" fill="#11192C"/>
+  <path d="M120 161C120 122.34 151.34 91 190 91H216V116H190C165.699 116 146 135.699 146 160C146 184.301 165.699 204 190 204H216V229H190C151.34 229 120 197.66 120 159V161Z" fill="url(#textgrad)"/>
+  <path d="M234 92L242 116L266 124L242 132L234 156L226 132L202 124L226 116L234 92Z" fill="#EEF3FF"/>
+  <path d="M234 98L240 116L258 122L240 128L234 146L228 128L210 122L228 116L234 98Z" fill="#FF7A00"/>
+  <text x="340" y="192" fill="url(#textgrad)" font-size="118" font-weight="700" font-family="Inter, Segoe UI, Arial, sans-serif">Glow</text>
+  <text x="624" y="192" fill="#EAF1FF" font-size="118" font-weight="700" font-family="Inter, Segoe UI, Arial, sans-serif">Flow</text>
+  <text x="346" y="236" fill="#97A5C7" font-size="28" font-weight="500" font-family="Inter, Segoe UI, Arial, sans-serif">The product and runtime for GlowScript</text>
+</svg>

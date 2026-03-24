@@ -1,3 +1,4 @@
+![Alt text](glowscript-icon-mono-dark.svg)
 # GlowFlow
 
 GlowFlow is the product and runtime surface for GlowScript, the scripting language for AI automation.

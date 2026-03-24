@@ -12,16 +12,6 @@ Current version:
 Tagline:
 GlowFlow - Plain-English AI automation powered by GlowScript.
 
-Product pages:
-- [Landing page](./docs/index.html)
-- [Demo page](./docs/demo.html)
-- [Handbook page](./docs/handbook.html)
-- [Semantics and reference (Markdown)](./docs/semantics.md)
-- [Semantics page (HTML)](./docs/semantics.html)
-- [Speed page](./docs/speed.html)
-- [Packages page](./docs/packages.html)
-- [Architecture page](./docs/architecture.html)
-- [Test proof page](./docs/tests.html)
 
 ## What It Is
 

@@ -1,0 +1,18 @@
+<svg width="980" height="280" viewBox="0 0 980 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="termgrad" x1="84" y1="52" x2="420" y2="238" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4DE8FF"/>
+      <stop offset="0.55" stop-color="#9D4DFF"/>
+      <stop offset="1" stop-color="#FF7A00"/>
+    </linearGradient>
+  </defs>
+  <rect width="980" height="280" rx="36" fill="#0B0F19"/>
+  <rect x="36" y="36" width="908" height="208" rx="28" fill="#11192C" stroke="#202A42"/>
+  <circle cx="78" cy="76" r="8" fill="#FF7A00"/>
+  <circle cx="106" cy="76" r="8" fill="#F3C95A"/>
+  <circle cx="134" cy="76" r="8" fill="#4DE8FF"/>
+  <text x="80" y="164" fill="#EEF3FF" font-size="72" font-weight="600" font-family="SFMono-Regular, Menlo, Consolas, monospace">$</text>
+  <text x="136" y="164" fill="url(#termgrad)" font-size="72" font-weight="700" font-family="SFMono-Regular, Menlo, Consolas, monospace">glow</text>
+  <path d="M828 76L838 104L866 114L838 124L828 152L818 124L790 114L818 104L828 76Z" fill="#4DE8FF"/>
+  <text x="80" y="208" fill="#91A0C3" font-size="24" font-weight="500" font-family="Inter, Segoe UI, Arial, sans-serif">CLI identity for terminal output, docs, and installer screens</text>
+</svg>

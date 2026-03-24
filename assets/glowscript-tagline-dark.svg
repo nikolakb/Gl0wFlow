@@ -1,0 +1,19 @@
+<svg width="1400" height="420" viewBox="0 0 1400 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="taggrad" x1="365" y1="82" x2="884" y2="302" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4DE8FF"/>
+      <stop offset="0.55" stop-color="#9D4DFF"/>
+      <stop offset="1" stop-color="#FF7A00"/>
+    </linearGradient>
+  </defs>
+  <rect width="1400" height="420" rx="54" fill="#0B0F19"/>
+  <rect x="86" y="90" width="232" height="232" rx="58" fill="#11192C"/>
+  <path d="M140 208C140 164.369 175.369 129 219 129H248V157H219C190.833 157 168 179.833 168 208C168 236.167 190.833 259 219 259H248V287H219C175.369 287 140 251.631 140 208Z" fill="url(#taggrad)"/>
+  <path d="M268 128L278 159L309 169L278 179L268 210L258 179L227 169L258 159L268 128Z" fill="#EEF3FF"/>
+  <path d="M268 136L276 159L299 167L276 175L268 198L260 175L237 167L260 159L268 136Z" fill="#FF7A00"/>
+  <text x="372" y="194" fill="url(#taggrad)" font-size="126" font-weight="700" font-family="Inter, Segoe UI, Arial, sans-serif">Glow</text>
+  <text x="676" y="194" fill="#EEF3FF" font-size="126" font-weight="700" font-family="Inter, Segoe UI, Arial, sans-serif">Script</text>
+  <text x="372" y="262" fill="#A2AFCD" font-size="38" font-weight="500" font-family="Inter, Segoe UI, Arial, sans-serif">The scripting language for AI automation</text>
+  <path d="M1208 96L1220 132L1256 144L1220 156L1208 192L1196 156L1160 144L1196 132L1208 96Z" fill="#4DE8FF"/>
+  <path d="M1208 104L1217 132L1245 141L1217 150L1208 178L1199 150L1171 141L1199 132L1208 104Z" fill="#FF7A00"/>
+</svg>

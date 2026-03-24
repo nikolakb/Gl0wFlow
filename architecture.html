@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GlowFlow Architecture</title>
+    <style>
+      :root {
+        --ink: #13211a;
+        --muted: #5f6f64;
+        --line: rgba(19, 33, 26, 0.12);
+        --panel: rgba(255, 255, 255, 0.76);
+        --accent: #ea6a32;
+        --code: #1b241e;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 10% 10%, rgba(234,106,50,0.16), transparent 24%),
+          radial-gradient(circle at 90% 15%, rgba(31,98,72,0.14), transparent 24%),
+          linear-gradient(180deg, #fff8ee 0%, #f5f0e8 52%, #edf4ef 100%);
+        font-family: Georgia, "Times New Roman", serif;
+      }
+
+      .shell {
+        width: min(1120px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 28px 0 56px;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: center;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .brand img {
+        width: 260px;
+        max-width: 52vw;
+        height: auto;
+        display: block;
+      }
+
+      .topbar nav {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.48);
+        border: 1px solid rgba(19, 33, 26, 0.08);
+        box-shadow: 0 12px 30px rgba(35, 28, 10, 0.06);
+      }
+
+      .topbar a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .hero,
+      .card {
+        margin-top: 18px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: var(--panel);
+        backdrop-filter: blur(10px);
+        box-shadow:
+          0 18px 60px rgba(35, 28, 10, 0.07),
+          inset 0 1px 0 rgba(255,255,255,0.36);
+      }
+
+      .hero,
+      .card {
+        padding: 28px;
+      }
+
+      .eyebrow {
+        display: inline-block;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(234,106,50,0.16), rgba(31,98,72,0.12));
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 0.78rem;
+        border: 1px solid rgba(234,106,50,0.12);
+      }
+
+      h1, h2, h3 {
+        margin: 0;
+        line-height: 0.96;
+      }
+
+      h1 {
+        margin-top: 16px;
+        font-size: clamp(2.7rem, 6vw, 5rem);
+      }
+
+      h2 {
+        font-size: 1.75rem;
+      }
+
+      p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.68;
+      }
+
+      .hero p,
+      .card p {
+        margin-top: 16px;
+      }
+
+      .flow {
+        margin-top: 22px;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 10px;
+      }
+
+      .step {
+        padding: 16px;
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,0.7);
+      }
+
+      .step strong {
+        display: block;
+        font-size: 0.82rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .step span {
+        display: block;
+        margin-top: 8px;
+        font-size: 1rem;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+
+      ul {
+        margin: 16px 0 0;
+        padding-left: 18px;
+        color: var(--muted);
+        line-height: 1.68;
+      }
+
+      pre {
+        margin: 16px 0 0;
+        padding: 18px;
+        border-radius: 18px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0)),
+          var(--code);
+        color: #f4f0e8;
+        overflow: auto;
+        white-space: pre-wrap;
+        line-height: 1.6;
+        font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+        font-size: 0.92rem;
+      }
+
+      .footer {
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: 0.94rem;
+        text-align: center;
+      }
+
+      @media (max-width: 980px) {
+        .flow,
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .topbar nav {
+          width: 100%;
+          justify-content: space-between;
+          border-radius: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <div class="topbar">
+        <div class="brand">
+          <img src="./assets/glowflow-wordmark-dark.svg" alt="GlowFlow logo" />
+        </div>
+        <nav>
+          <a href="./index.html">Landing</a>
+          <a href="./demo.html">Demo</a>
+          <a href="./handbook.html">Handbook</a>
+          <a href="./semantics.html">Semantics</a>
+          <a href="./speed.html">Speed</a>
+          <a href="./tests.html">Tests</a>
+          <a href="../README.md">README</a>
+        </nav>
+      </div>
+
+      <section class="hero">
+        <span class="eyebrow">Architecture</span>
+        <h1>How GlowFlow turns GlowScript into automation.</h1>
+        <p>
+          GlowFlow is intentionally built around a small language stack, not a
+          pile of ad hoc scripts. The architecture is simple enough to explain,
+          but strong enough to support readable syntax, semantic checks, direct
+          execution, and a path to native binaries.
+        </p>
+        <p>
+          The current release should be read as GlowFlow v1.0.1 and GlowScript
+          v1.0.1: a public release line with a real language boundary, a proven
+          execution surface, HTTPS webhook transport, and language-level error
+          recovery, while still leaving room for future hardening.
+        </p>
+        <p>
+          Performance should be read the same way. The target is not magic
+          zero-latency automation; it is keeping language overhead small enough
+          that servers spend their time on AI calls, APIs, files, and tools
+          instead of on the GlowFlow runtime itself.
+        </p>
+        <div class="flow">
+          <div class="step">
+            <strong>1. Source</strong>
+            <span>GlowScript code</span>
+          </div>
+          <div class="step">
+            <strong>2. Lexer</strong>
+            <span>Readable tokens</span>
+          </div>
+          <div class="step">
+            <strong>3. Parser</strong>
+            <span>AST structure</span>
+          </div>
+          <div class="step">
+            <strong>4. Semantics</strong>
+            <span>Rules and diagnostics</span>
+          </div>
+          <div class="step">
+            <strong>5. Runtime</strong>
+            <span>Interpreter execution</span>
+          </div>
+          <div class="step">
+            <strong>6. Build</strong>
+            <span>Native deployment path</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="grid">
+        <section class="card">
+          <h2>1. Lexer</h2>
+          <p>
+            The lexer reads GlowScript line by line and emits indentation-aware
+            tokens. This is what makes the language feel plain-English without
+            becoming ambiguous.
+          </p>
+          <ul>
+            <li>handles two-space indentation blocks</li>
+            <li>recognizes words, strings, numbers, lists, objects, and operators</li>
+            <li>produces friendly early errors for bad indentation and broken strings</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>2. Parser</h2>
+          <p>
+            The parser maps readable statements like `set`, `task`, `when`,
+            `extract`, and `pipe` into a compact abstract syntax tree.
+          </p>
+          <ul>
+            <li>keeps the grammar small and explainable</li>
+            <li>supports indentation blocks instead of punctuation-heavy syntax</li>
+            <li>preserves a clean shape for formatting and inspection</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>3. Semantic Analyzer</h2>
+          <p>
+            The semantic pass is where GlowScript stops being just parseable text
+            and starts behaving like a language with rules.
+          </p>
+          <ul>
+            <li>catches unknown names before runtime</li>
+            <li>checks workflow shapes like `repeat`, `for each`, and `run task`</li>
+            <li>enforces object access and basic numeric comparison rules</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>4. Interpreter Runtime</h2>
+          <p>
+            The interpreter makes GlowScript immediately useful. `glow run`
+            executes the language directly with files, JSON, CSV, AI calls,
+            tools, scheduling behavior, memory, and webhook handling.
+          </p>
+          <ul>
+            <li>fast path for MVP execution</li>
+            <li>most complete runtime today</li>
+            <li>used as the reference behavior for test parity</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>5. AI And Tool Layer</h2>
+          <p>
+            GlowScript treats AI and automation tools as language concepts,
+            not bolt-ons. Structured forms like `extract`, `classify`, and
+            `decide` flow through a shared runtime contract.
+          </p>
+          <ul>
+            <li>supports fallback, mock, command, OpenAI, and Ollama paths</li>
+            <li>validates structured responses instead of trusting raw text</li>
+            <li>supports MCP-style filesystem tools and user-defined tools</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2>6. Build Path</h2>
+          <p>
+            GlowFlow has a deployment story beyond the interpreter. The build
+            path is designed to preserve behavior while moving toward native
+            execution.
+          </p>
+          <ul>
+            <li>analyzes the same language pipeline before build output</li>
+            <li>supports transpilation and a native runner path</li>
+            <li>native parity is checked against interpreter output in tests</li>
+          </ul>
+        </section>
+      </div>
+
+      <section class="card">
+        <h2>Why This Architecture Matters</h2>
+        <p>
+          The important part is not that GlowScript has a lexer and parser. The
+          important part is that the language boundary is real. GlowFlow is
+          not “just some prompts” and it is not “just YAML with better words.”
+          It already has the structure of a serious language:
+        </p>
+        <pre>GlowScript source
+  -> lexer
+  -> parser
+  -> AST
+  -> semantic analyzer
+  -> interpreter runtime or native build path</pre>
+        <p>
+          That architecture is what makes GlowFlow presentable as a new
+          category: a scripting language built specifically for AI automation.
+        </p>
+        <p>
+          For this MVP, the practical goal is simple: startup should feel
+          instant, parsing and checks should be negligible, and webhook handlers
+          should stay fast unless external systems are the bottleneck.
+        </p>
+      </section>
+
+      <footer class="footer">
+        GlowFlow v1.0.1 architecture page.
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,762 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GlowFlow | GlowScript Documentation</title>
+    <style>
+      :root {
+        --bg: #0d1320;
+        --bg-soft: #121b2b;
+        --panel: rgba(17, 25, 39, 0.78);
+        --panel-strong: #111827;
+        --line: rgba(148, 163, 184, 0.18);
+        --line-strong: rgba(148, 163, 184, 0.28);
+        --text: #edf2ff;
+        --muted: #98a6c5;
+        --accent: #ff7a00;
+        --accent-soft: rgba(255, 122, 0, 0.16);
+        --cyan: #4de8ff;
+        --violet: #9d4dff;
+        --green: #4cc38a;
+        --shadow: 0 30px 80px rgba(3, 7, 18, 0.42);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 8% 10%, rgba(77, 232, 255, 0.13), transparent 22%),
+          radial-gradient(circle at 85% 12%, rgba(157, 77, 255, 0.16), transparent 22%),
+          radial-gradient(circle at 60% 100%, rgba(255, 122, 0, 0.12), transparent 30%),
+          linear-gradient(180deg, #0a101a 0%, #0d1320 38%, #101827 100%);
+        min-height: 100vh;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .shell {
+        width: min(1180px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding-bottom: 56px;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 18px 0;
+        backdrop-filter: blur(18px);
+      }
+
+      .brand img {
+        width: 260px;
+        max-width: 58vw;
+        display: block;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(9, 13, 23, 0.7);
+        box-shadow: var(--shadow);
+      }
+
+      .nav a {
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.08fr 0.92fr;
+        gap: 22px;
+        padding-top: 18px;
+      }
+
+      .card,
+      .hero-panel,
+      .code-panel {
+        border: 1px solid var(--line);
+        border-radius: 26px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0)),
+          var(--panel);
+        box-shadow: var(--shadow);
+      }
+
+      .hero-panel {
+        padding: 40px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-panel::after {
+        content: "";
+        position: absolute;
+        right: -70px;
+        top: -60px;
+        width: 240px;
+        height: 240px;
+        border-radius: 999px;
+        background: radial-gradient(circle, rgba(77, 232, 255, 0.18), transparent 70%);
+        filter: blur(12px);
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--line);
+        color: var(--cyan);
+        font-size: 0.8rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        font-weight: 700;
+        line-height: 0.96;
+      }
+
+      h1 {
+        margin-top: 18px;
+        font-size: clamp(3rem, 6vw, 5.5rem);
+        letter-spacing: -0.04em;
+      }
+
+      h2 {
+        font-size: 1.7rem;
+        letter-spacing: -0.03em;
+      }
+
+      h3 {
+        font-size: 1.15rem;
+        letter-spacing: -0.02em;
+      }
+
+      .lead {
+        margin: 18px 0 0;
+        max-width: 46rem;
+        color: var(--muted);
+        font-size: 1.08rem;
+        line-height: 1.72;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 26px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        padding: 0 18px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        font-size: 0.95rem;
+        transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+      }
+
+      .button:hover {
+        transform: translateY(-1px);
+        border-color: var(--line-strong);
+      }
+
+      .button.primary {
+        color: #fff;
+        border-color: transparent;
+        background: linear-gradient(135deg, #ff7a00, #ff9e3d);
+      }
+
+      .button.secondary {
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .hero-stats {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 26px;
+      }
+
+      .stat {
+        padding: 16px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--line);
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 1.28rem;
+      }
+
+      .stat span {
+        display: block;
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 0.92rem;
+        line-height: 1.45;
+      }
+
+      .code-panel {
+        padding: 18px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0)),
+          #09101a;
+      }
+
+      .window-bar {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        padding: 4px 2px 14px;
+      }
+
+      .dot {
+        width: 11px;
+        height: 11px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.18);
+      }
+
+      .dot:first-child {
+        background: #ff7a00;
+      }
+
+      .dot:nth-child(2) {
+        background: #f0c85a;
+      }
+
+      .dot:nth-child(3) {
+        background: #4cc38a;
+      }
+
+      pre,
+      code {
+        font-family: "SFMono-Regular", "IBM Plex Mono", "Menlo", monospace;
+      }
+
+      pre {
+        margin: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
+        overflow: auto;
+        line-height: 1.66;
+        font-size: 0.94rem;
+      }
+
+      .code-surface {
+        padding: 22px;
+        border-radius: 22px;
+        background: #0d1624;
+        color: #edf2ff;
+        border: 1px solid rgba(148, 163, 184, 0.14);
+      }
+
+      .install-panel {
+        margin-top: 20px;
+        padding: 18px;
+        border-radius: 22px;
+        border: 1px solid var(--line);
+        background: rgba(9, 13, 23, 0.72);
+      }
+
+      .install-panel pre {
+        margin-top: 12px;
+      }
+
+      .section {
+        padding-top: 22px;
+      }
+
+      .section-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 14px;
+      }
+
+      .section-head p {
+        margin: 0;
+        max-width: 42rem;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .docs-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .card {
+        padding: 24px;
+        transition: transform 160ms ease, border-color 160ms ease;
+      }
+
+      .card:hover {
+        transform: translateY(-2px);
+        border-color: var(--line-strong);
+      }
+
+      .label {
+        display: inline-block;
+        margin-bottom: 10px;
+        color: var(--cyan);
+        font-size: 0.8rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .card p,
+      .card ul {
+        margin: 12px 0 0;
+        color: var(--muted);
+        line-height: 1.68;
+      }
+
+      .card ul {
+        padding-left: 18px;
+      }
+
+      .card code.inline {
+        padding: 2px 6px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .doc-link {
+        display: block;
+        min-height: 100%;
+      }
+
+      .doc-link .go {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 18px;
+        color: var(--text);
+        font-size: 0.92rem;
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: 0.92fr 1.08fr;
+        gap: 18px;
+      }
+
+      .footer {
+        padding: 34px 0 16px;
+        color: var(--muted);
+        text-align: center;
+        font-size: 0.94rem;
+      }
+
+      @media (max-width: 1080px) {
+        .docs-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 920px) {
+        .hero,
+        .grid,
+        .split,
+        .docs-grid,
+        .hero-stats {
+          grid-template-columns: 1fr;
+        }
+
+        .topbar {
+          position: static;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .nav {
+          width: 100%;
+          border-radius: 20px;
+        }
+
+        .hero-panel {
+          padding: 28px;
+        }
+
+        .section-head {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <a class="brand" href="./index.html">
+          <img src="./assets/glowflow-wordmark-dark.svg" alt="GlowFlow logo" />
+        </a>
+        <nav class="nav">
+          <a href="#overview">Overview</a>
+          <a href="#docs">Docs</a>
+          <a href="#examples">Examples</a>
+          <a href="#proof">Proof</a>
+          <a href="./handbook.html">Handbook</a>
+          <a href="./semantics.html">Semantics</a>
+          <a href="./speed.html">Speed</a>
+          <a href="./packages.html">Packages</a>
+          <a href="./architecture.html">Architecture</a>
+          <a href="./tests.html">Tests</a>
+        </nav>
+      </header>
+
+      <section class="hero" id="overview">
+        <div class="hero-panel">
+          <span class="eyebrow">GlowFlow Documentation</span>
+          <h1>The scripting language for AI automation.</h1>
+          <p class="lead">
+            Build readable AI agents, webhooks, approvals, tool workflows, and
+            API automations in one plain-English scripting system.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="../README.md">Open README</a>
+            <a class="button secondary" href="#docs">Browse Documentation</a>
+            <a class="button secondary" href="./terminal-demo.html">Watch Terminal Demo</a>
+          </div>
+          <div class="install-panel">
+            <span class="label">Terminal Install</span>
+            <pre><code>curl -fsSL https://raw.githubusercontent.com/nikolakb/Gl0wFlow/main/scripts/install-from-repo.sh | bash -s -- https://github.com/nikolakb/Gl0wFlow.git [git-ref]</code></pre>
+          </div>
+          <div class="hero-stats">
+            <div class="stat">
+              <strong>v1.0.1</strong>
+              <span>Fix release with HTTPS webhooks and first-class error recovery.</span>
+            </div>
+            <div class="stat">
+              <strong>Mother-proved</strong>
+              <span>One end-to-end proof now covers check, inspect, run, build, native parity, and artifacts.</span>
+            </div>
+            <div class="stat">
+              <strong>Ollama</strong>
+              <span>Real provider-backed proof for extract, classify, decide, and summarize.</span>
+            </div>
+            <div class="stat">
+              <strong>GitHub-ready</strong>
+              <span>Static documentation surface built to serve cleanly from Pages.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-panel">
+          <div class="window-bar">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+          <div class="code-surface">
+            <pre>when webhook "/lead"
+  read json body
+
+  extract from body.message:
+    name
+    company
+    email
+
+  classify body.message as:
+    urgent
+    normal
+    spam
+
+  decide next_step from body.message:
+    ask_for_details
+    send_invoice
+    escalate_to_human
+
+  reply "Lead received for {body.email}"</pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="split">
+          <div class="card">
+            <span class="label">Pressure Point</span>
+            <h2>AI automation breaks down when the workflow stops being readable.</h2>
+            <p>
+              The pressure point is not writing one API call. It is what happens
+              after the fifth webhook, the third approval step, the second AI
+              classification, and the first urgent production edit. At that point,
+              teams usually end up with Python glue, shell fragments, YAML sprawl,
+              and prompt text scattered across files that no longer read like one
+              coherent system.
+            </p>
+            <ul>
+              <li>Logic gets split across code, config, prompts, and workflow tools.</li>
+              <li>AI behavior becomes hard to audit because intent is no longer explicit.</li>
+              <li>Simple automation changes start requiring framework-level edits.</li>
+              <li>Operational pressure grows faster than readability.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <span class="label">Solution</span>
+            <h2>GlowFlow brings the workflow back into one readable language surface.</h2>
+            <p>
+              GlowFlow solves that by making GlowScript itself the control plane
+              for the workflow. Files, webhooks, AI extraction, decisions, tools,
+              approvals, schedules, and API calls all stay visible in one plain-English
+              script instead of being spread across multiple layers.
+            </p>
+            <ul>
+              <li>Readable source becomes the operational source of truth.</li>
+              <li>Structured AI operations become language forms, not scattered prompt glue.</li>
+              <li>The same script can be checked, run, served, inspected, and built.</li>
+              <li>The system stays small enough to reason about under change pressure.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="split">
+          <div class="card">
+            <span class="label">Quick Start</span>
+            <h2>Start from the CLI, not from a framework.</h2>
+            <pre><code>cargo run -- run examples/investor_demo.glow
+cargo run -- check examples/mother_of_all.glow
+cargo run -- build examples/mother_of_all.glow
+
+./scripts/investor-demo.sh</code></pre>
+            <p>
+              GlowFlow keeps the entry point small. You run a GlowScript file,
+              inspect it, build it, or serve it. The docs below are organized
+              around that same workflow.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="docs">
+        <div class="section-head">
+          <div>
+            <span class="label">Documentation</span>
+            <h2>Start here, then go deeper.</h2>
+          </div>
+          <p>
+            This page is the front door. The rest of the documentation is split
+            between language reference, runtime behavior, AI/provider details,
+            architecture, proof, and live demos.
+          </p>
+        </div>
+        <div class="docs-grid">
+          <a class="card doc-link" href="./language.md">
+            <span class="label">Language</span>
+            <h3>Language Notes</h3>
+            <p>Core concepts, syntax shape, backbone keywords, and the current MVP boundaries.</p>
+            <span class="go">Open language notes -></span>
+          </a>
+          <a class="card doc-link" href="./grammar.md">
+            <span class="label">Grammar</span>
+            <h3>Grammar</h3>
+            <p>Plain-English statement forms, keyword surface, and the smallest useful automation toolkit.</p>
+            <span class="go">Open grammar -></span>
+          </a>
+          <a class="card doc-link" href="./runtime.md">
+            <span class="label">Runtime</span>
+            <h3>Runtime</h3>
+            <p>Execution model, current runtime boundaries, and performance targets for server-side MVP use.</p>
+            <span class="go">Open runtime docs -></span>
+          </a>
+          <a class="card doc-link" href="./speed.html">
+            <span class="label">Speed</span>
+            <h3>Speed Benchmarks</h3>
+            <p>Only the measured execution timings that matter: CLI latency, native startup, and localhost webhook overhead.</p>
+            <span class="go">Open speed page -></span>
+          </a>
+          <a class="card doc-link" href="./packages.html">
+            <span class="label">Packages</span>
+            <h3>Release Packages</h3>
+            <p>Windows x64, Linux x64, and macOS ARM packaging flow for the standalone `glow` CLI.</p>
+            <span class="go">Open packages page -></span>
+          </a>
+          <a class="card doc-link" href="./handbook.html">
+            <span class="label">Handbook</span>
+            <h3>Operator Handbook</h3>
+            <p>The serious guide to the language model, data flow, execution logic, and authoring rules.</p>
+            <span class="go">Open handbook -></span>
+          </a>
+          <a class="card doc-link" href="./semantics.html">
+            <span class="label">Semantics</span>
+            <h3>Language Semantics</h3>
+            <p>The detailed reference for values, control flow, AI forms, runtime behavior, and v1.0.1 language boundaries.</p>
+            <span class="go">Open semantics -></span>
+          </a>
+          <a class="card doc-link" href="./ai.md">
+            <span class="label">AI</span>
+            <h3>AI Providers</h3>
+            <p>Structured AI forms, provider configuration, typed output contracts, and Ollama-backed proof.</p>
+            <span class="go">Open AI docs -></span>
+          </a>
+          <a class="card doc-link" href="./mcp.md">
+            <span class="label">MCP</span>
+            <h3>MCP Integration</h3>
+            <p>Filesystem-style MCP tools today, plus the longer-term direction for tool orchestration.</p>
+            <span class="go">Open MCP docs -></span>
+          </a>
+          <a class="card doc-link" href="./architecture.html">
+            <span class="label">Architecture</span>
+            <h3>Architecture</h3>
+            <p>Lexer, parser, semantic analyzer, interpreter, and native build path in one view.</p>
+            <span class="go">Open architecture -></span>
+          </a>
+          <a class="card doc-link" href="./demo.html">
+            <span class="label">Demo</span>
+            <h3>Live Demo Story</h3>
+            <p>The investor-facing flow: one inbound message becomes structured data, a decision, and a reply.</p>
+            <span class="go">Open demo page -></span>
+          </a>
+          <a class="card doc-link" href="./terminal-demo.html">
+            <span class="label">Terminal</span>
+            <h3>Terminal Demo</h3>
+            <p>An asciinema-style replay of a real GlowFlow session: check, run, build, and native execution.</p>
+            <span class="go">Open terminal demo -></span>
+          </a>
+          <a class="card doc-link" href="./tests.html">
+            <span class="label">Proof</span>
+            <h3>Test Proof</h3>
+            <p>The strongest current evidence that GlowScript behaves like a real language, not a toy syntax.</p>
+            <span class="go">Open test proof -></span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section" id="examples">
+        <div class="section-head">
+          <div>
+            <span class="label">Examples</span>
+            <h2>Representative GlowScript programs</h2>
+          </div>
+          <p>
+            The examples directory is not filler. It is used as the basis for
+            CLI checks, native builds, repeated parity runs, and larger stress
+            scenarios.
+          </p>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <span class="label">Investor Demo</span>
+            <h3>Inbound message to action plan</h3>
+            <p>
+              The cleanest product story: structured extraction, urgency
+              classification, next-step decision, and reply drafting.
+            </p>
+            <pre><code>cargo run -- run examples/investor_demo.glow</code></pre>
+          </div>
+          <div class="card">
+            <span class="label">Ultimate Flow</span>
+            <h3>Compiler and runtime stress example</h3>
+            <p>
+              Exercises imports, tools, MCP filesystem calls, retry, parallel,
+              schedules, JSON, CSV, pipelines, and native parity.
+            </p>
+            <pre><code>cargo run -- build examples/ultimate_flow.glow</code></pre>
+          </div>
+          <div class="card">
+            <span class="label">Mother Pass</span>
+            <h3>Soak-style language scenario</h3>
+            <p>
+              Used in the latest heavy-duty passes for repeated runs, import
+              depth, large payloads, and webhook stress support.
+            </p>
+            <pre><code>cargo run -- run examples/mother_of_all.glow</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="proof">
+        <div class="section-head">
+          <div>
+            <span class="label">Proof</span>
+            <h2>What the current proof surface actually says</h2>
+          </div>
+          <p>
+            The strongest claim GlowFlow can make right now is not marketing
+            language. It is that the language boundary is real and the runtime
+            behavior has survived repeated heavy passes.
+          </p>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <span class="label">Language</span>
+            <h3>9 passing tests</h3>
+            <p>
+              The public suite is intentionally compact: one full end-to-end
+              mother scenario, one narrow runtime regression test, and seven
+              focused v1.0.1 fix tests.
+            </p>
+          </div>
+          <div class="card">
+            <span class="label">Stress</span>
+            <h3>Heavy churn already found real bugs</h3>
+            <p>
+              Same-file formatter corruption, webhook GET mutation, import-base
+              inconsistencies, and provider fenced-JSON interop were all exposed
+              by stress passes and fixed.
+            </p>
+          </div>
+          <div class="card">
+            <span class="label">AI Providers</span>
+            <h3>Real Ollama-backed proof</h3>
+            <p>
+              GlowFlow now has verified runs against a local Ollama server for
+              <code class="inline">extract</code>, <code class="inline">classify</code>,
+              <code class="inline">decide</code>, and <code class="inline">summarize</code>.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        GlowFlow v1.0.1 documentation hub for GlowScript v1.0.1. Start here, then move into the language, semantics, runtime, architecture, demo, and proof pages.
+      </footer>
+    </div>
+  </body>
+</html>

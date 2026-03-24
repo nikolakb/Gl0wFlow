@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GlowFlow Semantics</title>
+    <style>
+      :root {
+        --ink: #13211a;
+        --muted: #5f6f64;
+        --line: rgba(19, 33, 26, 0.12);
+        --panel: rgba(255, 255, 255, 0.78);
+        --accent: #ea6a32;
+        --code: #1b241e;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 12% 10%, rgba(234,106,50,0.16), transparent 24%),
+          radial-gradient(circle at 88% 12%, rgba(31,98,72,0.14), transparent 22%),
+          linear-gradient(180deg, #fff8ee 0%, #f5f0e8 52%, #edf4ef 100%);
+        font-family: Georgia, "Times New Roman", serif;
+      }
+      a { color: inherit; text-decoration: none; }
+      .shell { width: min(1120px, calc(100vw - 32px)); margin: 0 auto; padding: 28px 0 56px; }
+      .topbar { display: flex; justify-content: space-between; gap: 16px; align-items: center; color: var(--muted); font-size: 0.95rem; }
+      .brand img { width: 260px; max-width: 52vw; height: auto; display: block; }
+      .topbar nav { display: flex; gap: 12px; align-items: center; padding: 10px 14px; border-radius: 999px; background: rgba(255,255,255,0.48); border: 1px solid rgba(19, 33, 26, 0.08); box-shadow: 0 12px 30px rgba(35, 28, 10, 0.06); }
+      .hero, .card { margin-top: 18px; border: 1px solid var(--line); border-radius: 24px; background: var(--panel); backdrop-filter: blur(10px); box-shadow: 0 18px 60px rgba(35, 28, 10, 0.07), inset 0 1px 0 rgba(255,255,255,0.36); padding: 28px; }
+      .eyebrow { display: inline-block; padding: 8px 12px; border-radius: 999px; background: linear-gradient(90deg, rgba(234,106,50,0.16), rgba(31,98,72,0.12)); color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.78rem; border: 1px solid rgba(234,106,50,0.12); }
+      h1, h2, h3 { margin: 0; line-height: 0.96; }
+      h1 { margin-top: 16px; font-size: clamp(2.8rem, 6vw, 5rem); }
+      h2 { font-size: 1.75rem; }
+      p { margin: 16px 0 0; color: var(--muted); line-height: 1.7; }
+      .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+      .label { display: inline-block; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+      ul { margin: 16px 0 0; padding-left: 18px; color: var(--muted); line-height: 1.7; }
+      li + li { margin-top: 8px; }
+      pre { margin: 16px 0 0; padding: 18px; border-radius: 18px; background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0)), var(--code); color: #f4f0e8; overflow: auto; white-space: pre-wrap; line-height: 1.6; font-family: "SFMono-Regular", Menlo, Consolas, monospace; font-size: 0.92rem; }
+      .footer { margin-top: 18px; color: var(--muted); font-size: 0.94rem; text-align: center; }
+      @media (max-width: 960px) {
+        .grid { grid-template-columns: 1fr; }
+        .topbar { flex-direction: column; align-items: flex-start; }
+        .topbar nav { width: 100%; justify-content: space-between; border-radius: 18px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <div class="topbar">
+        <div class="brand">
+          <img src="./assets/glowflow-wordmark-dark.svg" alt="GlowFlow logo" />
+        </div>
+        <nav>
+          <a href="./index.html">Landing</a>
+          <a href="./handbook.html">Handbook</a>
+          <a href="./architecture.html">Architecture</a>
+          <a href="./tests.html">Tests</a>
+          <a href="../README.md">README</a>
+        </nav>
+      </div>
+
+      <section class="hero">
+        <span class="eyebrow">Semantics</span>
+        <h1>The detailed semantics and capabilities of GlowScript v1.0.1.</h1>
+        <p>
+          This page explains the language as a language: what statements mean, how
+          values flow, what the runtime guarantees, which operations are strict,
+          and where the current implementation stops.
+        </p>
+      </section>
+
+      <div class="grid">
+        <section class="card">
+          <span class="label">Core Model</span>
+          <h2>Statement-first, automation-first.</h2>
+          <ul>
+            <li>GlowScript is built around named workflow statements instead of punctuation-heavy syntax.</li>
+            <li>Programs are indentation-based and read as ordered steps.</li>
+            <li>The language is optimized for automation readability, not abstraction density.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <span class="label">Values</span>
+          <h2>Simple values, explicit structure.</h2>
+          <ul>
+            <li>Primitive values: strings, numbers, booleans, `null`.</li>
+            <li>Structured values: lists and objects.</li>
+            <li>HTTP responses are object-shaped values with `status`, `status_text`, `headers`, `body`, and `text`.</li>
+            <li>AI outputs commonly land in `result` unless the statement writes elsewhere.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <span class="label">Control</span>
+          <h2>Readable control flow.</h2>
+          <ul>
+            <li>`if` / `else` branch on truthy values.</li>
+            <li>`repeat` loops numerically.</li>
+            <li>`for each` requires a list.</li>
+            <li>`retry` reruns a block until success or exhaustion.</li>
+            <li>`parallel` is grouped intent in v1.0.1, not true concurrent scheduling.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <span class="label">Workflow Units</span>
+          <h2>Tasks, functions, and tools.</h2>
+          <ul>
+            <li>`task` defines reusable workflow steps.</li>
+            <li>`function` defines reusable logic with named parameters.</li>
+            <li>`tool` defines reusable tool-shaped capabilities.</li>
+            <li>`call function` and `call tool` pass named argument objects.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <span class="label">Files And Data</span>
+          <h2>Files, JSON, CSV, and HTTP are native.</h2>
+          <ul>
+            <li>`read file`, `save`, `load json`, `save json`, `load csv`, `save csv` are built-in language forms.</li>
+            <li>`get`, `post`, `put`, and `delete` are expressions and can be assigned or recovered.</li>
+            <li>Paths resolve relative to the script working directory.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <span class="label">Webhooks</span>
+          <h2>GlowScript is a server language too.</h2>
+          <ul>
+            <li>`when webhook "/path"` defines a request entry point.</li>
+            <li>`read json body` populates `body`.</li>
+            <li>`reply expr` returns the response body.</li>
+            <li>`glow serve` now supports both HTTP and HTTPS transport.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <span class="label">AI</span>
+          <h2>Structured AI is language surface, not helper code.</h2>
+          <ul>
+            <li>`ask ai`, `extract`, `classify`, `summarize`, `rewrite`, and `decide` are first-class.</li>
+            <li>AI config can include `provider`, `model`, `system`, and `retries`.</li>
+            <li>The current providers are `mock`, `command`, `openai`, and `ollama`.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <span class="label">Errors</span>
+          <h2>v1.0.1 adds first-class recovery.</h2>
+          <ul>
+            <li>`throw expr` raises a runtime error using the rendered value text.</li>
+            <li>`try` / `catch error` catches runtime failures and binds the message to the catch variable.</li>
+            <li>`expr recover fallback` returns the fallback only if the wrapped expression fails.</li>
+            <li>`recover` is most useful around files, HTTP, and tool calls.</li>
+          </ul>
+          <pre>try
+  set data to read file "missing.json"
+catch error
+  set data to "{status: \"fallback\"}"
+
+set status to get "http://127.0.0.1:9/health" recover {status: "offline"}</pre>
+        </section>
+
+        <section class="card">
+          <span class="label">Semantics</span>
+          <h2>What gets checked before runtime.</h2>
+          <ul>
+            <li>Undefined values are rejected early.</li>
+            <li>Missing tasks, tools, and functions are rejected early.</li>
+            <li>Numeric comparisons expect number-compatible values.</li>
+            <li>Property access expects object-like values.</li>
+            <li>`remember` only accepts already-created values.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <span class="label">Execution</span>
+          <h2>Interpreter first, native runner second.</h2>
+          <ul>
+            <li>`glow run` executes through the interpreter.</li>
+            <li>`glow build` produces a native runner path that preserves the current supported semantics.</li>
+            <li>The language is designed to be deployable, not only interactive.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <span class="label">Current Capabilities</span>
+          <h2>What GlowScript can do now.</h2>
+          <ul>
+            <li>Readable automation with variables, branching, loops, tasks, functions, tools, and imports.</li>
+            <li>HTTP and HTTPS webhook handling.</li>
+            <li>Files, JSON, CSV, HTTP, AI, approvals, and memory.</li>
+            <li>MCP-style filesystem tools and exported user-defined tools.</li>
+            <li>Check, inspect, run, build, format, and REPL entry points.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <span class="label">Boundaries</span>
+          <h2>What v1.0.1 still does not claim.</h2>
+          <ul>
+            <li>No daemon scheduler yet for true recurring background execution.</li>
+            <li>No fully broad MCP ecosystem yet.</li>
+            <li>No claim of full production-hardening across every adapter and operational edge case.</li>
+            <li>No attempt to replace a general-purpose language ecosystem.</li>
+          </ul>
+        </section>
+      </div>
+
+      <div class="footer">
+        GlowFlow v1.0.1 semantics page for GlowScript v1.0.1.
+      </div>
+    </div>
+  </body>
+</html>

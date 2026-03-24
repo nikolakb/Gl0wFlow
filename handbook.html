@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GlowFlow Handbook</title>
+    <style>
+      :root {
+        --ink: #13211a;
+        --muted: #5f6f64;
+        --line: rgba(19, 33, 26, 0.12);
+        --panel: rgba(255, 255, 255, 0.78);
+        --accent: #ea6a32;
+        --code: #1b241e;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 12% 10%, rgba(234,106,50,0.16), transparent 24%),
+          radial-gradient(circle at 88% 12%, rgba(31,98,72,0.14), transparent 22%),
+          linear-gradient(180deg, #fff8ee 0%, #f5f0e8 52%, #edf4ef 100%);
+        font-family: Georgia, "Times New Roman", serif;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .shell {
+        width: min(1120px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 28px 0 56px;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: center;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .brand img {
+        width: 260px;
+        max-width: 52vw;
+        height: auto;
+        display: block;
+      }
+
+      .topbar nav {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.48);
+        border: 1px solid rgba(19, 33, 26, 0.08);
+        box-shadow: 0 12px 30px rgba(35, 28, 10, 0.06);
+      }
+
+      .hero,
+      .card {
+        margin-top: 18px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: var(--panel);
+        backdrop-filter: blur(10px);
+        box-shadow:
+          0 18px 60px rgba(35, 28, 10, 0.07),
+          inset 0 1px 0 rgba(255,255,255,0.36);
+      }
+
+      .hero,
+      .card {
+        padding: 28px;
+      }
+
+      .eyebrow {
+        display: inline-block;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(234,106,50,0.16), rgba(31,98,72,0.12));
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 0.78rem;
+        border: 1px solid rgba(234,106,50,0.12);
+      }
+
+      h1, h2, h3 {
+        margin: 0;
+        line-height: 0.96;
+      }
+
+      h1 {
+        margin-top: 16px;
+        font-size: clamp(2.8rem, 6vw, 5rem);
+      }
+
+      h2 {
+        font-size: 1.75rem;
+      }
+
+      h3 {
+        font-size: 1.15rem;
+      }
+
+      p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .hero p,
+      .card p {
+        margin-top: 16px;
+      }
+
+      .quick-grid,
+      .grid {
+        display: grid;
+        gap: 18px;
+      }
+
+      .quick-grid {
+        margin-top: 22px;
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .pill {
+        padding: 16px;
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,0.66);
+      }
+
+      .pill strong {
+        display: block;
+        font-size: 1rem;
+      }
+
+      .pill span {
+        display: block;
+        margin-top: 8px;
+        color: var(--muted);
+        line-height: 1.5;
+        font-size: 0.93rem;
+      }
+
+      .label {
+        display: inline-block;
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      ul,
+      ol {
+        margin: 16px 0 0;
+        padding-left: 20px;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      li + li {
+        margin-top: 8px;
+      }
+
+      pre {
+        margin: 16px 0 0;
+        padding: 18px;
+        border-radius: 18px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0)),
+          var(--code);
+        color: #f4f0e8;
+        overflow: auto;
+        white-space: pre-wrap;
+        line-height: 1.6;
+        font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+        font-size: 0.92rem;
+      }
+
+      .footer {
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: 0.94rem;
+        text-align: center;
+      }
+
+      @media (max-width: 980px) {
+        .quick-grid,
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .topbar nav {
+          width: 100%;
+          justify-content: space-between;
+          border-radius: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <div class="topbar">
+        <div class="brand">
+          <img src="./assets/glowflow-wordmark-dark.svg" alt="GlowFlow logo" />
+        </div>
+        <nav>
+          <a href="./index.html">Landing</a>
+          <a href="./demo.html">Demo</a>
+          <a href="./architecture.html">Architecture</a>
+          <a href="./semantics.html">Semantics</a>
+          <a href="./tests.html">Tests</a>
+          <a href="../README.md">README</a>
+        </nav>
+      </div>
+
+      <section class="hero">
+        <span class="eyebrow">Handbook</span>
+        <h1>The serious handbook for reading, writing, and reasoning about GlowScript.</h1>
+        <p>
+          This page is the operating guide for GlowFlow v1.0.1. It explains how
+          GlowScript is meant to be read, how the execution model works, how data
+          moves through a script, and where the language is intentionally strict.
+        </p>
+        <p>
+          The goal is not to describe every token. The goal is to explain the
+          logic that makes GlowScript behave like a real scripting language for
+          AI automation instead of a loose pile of prompts, YAML, and shell glue.
+        </p>
+        <div class="quick-grid">
+          <div class="pill">
+            <strong>Readable by design</strong>
+            <span>Programs should read like instructions, not framework plumbing.</span>
+          </div>
+          <div class="pill">
+            <strong>Automation-native</strong>
+            <span>Tasks, webhooks, AI, tools, files, and schedules are first-class.</span>
+          </div>
+          <div class="pill">
+            <strong>Language rules</strong>
+            <span>Lexer, parser, AST, semantic checks, runtime, and native build all exist.</span>
+          </div>
+          <div class="pill">
+            <strong>Proven surface</strong>
+            <span>GlowFlow currently stands on one mother end-to-end proof, one targeted regression test, and live runtime proof.</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="grid">
+        <section class="card">
+          <span class="label">Mental Model</span>
+          <h2>Think in steps and effects.</h2>
+          <p>
+            A GlowScript file is a sequence of named steps. Some steps create
+            values. Some steps make decisions. Some steps trigger outside-world
+            effects. That is the center of the model.
+          </p>
+          <ul>
+            <li>`set` creates state.</li>
+            <li>`if`, `repeat`, and `for each` route control flow.</li>
+            <li>`task`, `function`, and `tool` package reusable logic.</li>
+            <li>`ask ai`, `extract`, `classify`, `summarize`, `rewrite`, and `decide` perform reasoning work.</li>
+            <li>`when webhook` and `every` expose live automation entry points.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <span class="label">Backbone</span>
+          <h2>The language stays intentionally small.</h2>
+          <p>
+            GlowScript is serious because it stays constrained. The backbone words
+            are stable and readable: `set`, `say`, `if`, `repeat`, `for each`,
+            `task`, `when`, `every`, `ask`, `use`, and `tool`.
+          </p>
+          <pre>set lead to {name: "Ana", score: 92}
+
+if lead.score &gt; 80
+  say "Priority lead"
+else
+  say "Standard lead"</pre>
+        </section>
+
+        <section class="card">
+          <span class="label">Execution Model</span>
+          <h2>One language, two execution paths.</h2>
+          <p>
+            GlowFlow sends source through a language pipeline: lexing, parsing,
+            AST construction, semantic analysis, then either direct interpreter
+            execution or a native build path. The interpreter is the most complete
+            runtime today. Native output is still tested against the same language
+            behavior.
+          </p>
+          <pre>GlowScript source
+  -&gt; lexer
+  -&gt; parser
+  -&gt; AST
+  -&gt; semantic analyzer
+  -&gt; interpreter runtime or native build output</pre>
+        </section>
+
+        <section class="card">
+          <span class="label">Data Flow</span>
+          <h2>`result` is the working register.</h2>
+          <p>
+            Many operations write their output into `result`. That keeps short
+            workflows compact and makes pipeline-style flows possible without
+            introducing a temporary name for every intermediate step.
+          </p>
+          <pre>read file "report.txt"
+pipe summarize
+pipe save "summary.txt"</pre>
+          <p>
+            Use explicit variables when a value matters later. Use `result` when
+            the value is just moving through the current flow.
+          </p>
+        </section>
+
+        <section class="card">
+          <span class="label">Core Values</span>
+          <h2>Values are simple and practical.</h2>
+          <p>
+            GlowScript works with strings, numbers, booleans, lists, objects, and
+            structured response objects. This is deliberate. Automation languages
+            spend their time moving data between systems, not building elaborate
+            object hierarchies.
+          </p>
+          <ul>
+            <li>Files: `read file`, `save`, `save json`, `save csv`.</li>
+            <li>Data: `load json`, `load csv`, object and list literals.</li>
+            <li>HTTP: `get`, `post`, `put`, `delete` return structured response objects.</li>
+            <li>System state: `env`, `now`, `length`, and memory-like `remember` support.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <span class="label">Automation Logic</span>
+          <h2>Tasks and events are first-class.</h2>
+          <p>
+            A serious automation language should not hide workflows behind a host
+            framework. GlowScript keeps the automation surface visible in source.
+          </p>
+          <pre>task sync_sales
+  get "http://127.0.0.1:8080/sales"
+  save result to "sales.json"
+
+every 1 hour
+  run task sync_sales
+
+when webhook "/signup"
+  read json body
+  save json body to "signup-{now}.json"
+  reply "Signup received"</pre>
+        </section>
+
+        <section class="card">
+          <span class="label">AI Logic</span>
+          <h2>AI is a structured language feature.</h2>
+          <p>
+            GlowScript does not treat AI as an afterthought library. The language
+            has direct forms for asking, extracting, classifying, summarizing,
+            rewriting, and deciding. That lets scripts express intent instead of
+            repetitive provider plumbing.
+          </p>
+          <pre>extract from message using ai:
+  provider "ollama"
+  model "qwen3-coder:480b-cloud"
+  system "Extract only verified lead details"
+  fields:
+    name
+    email
+    company</pre>
+        </section>
+
+        <section class="card">
+          <span class="label">Tool Orchestration</span>
+          <h2>Tools are capability boundaries.</h2>
+          <p>
+            Use tools when a workflow needs to cross into another system or when
+            logic should be reusable from outside the current script.
+          </p>
+          <ul>
+            <li>`use mcp filesystem` activates filesystem-style tool space.</li>
+            <li>`call tool "filesystem.read_file"` bridges into adapters.</li>
+            <li>`tool` plus `export mcp tool` exposes GlowScript-defined capabilities outward.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <span class="label">Safety Model</span>
+          <h2>Failures should be directed and visible.</h2>
+          <p>
+            A serious workflow language should fail clearly. GlowScript already
+            enforces semantic guardrails around undefined names, invalid property
+            access, incorrect loop shapes, and misuse of comparisons. Runtime rules
+            also stay explicit, such as POST-only webhook execution and visible
+            approval checkpoints.
+          </p>
+          <ul>
+            <li>Prefer failing before the side effect happens.</li>
+            <li>Prefer explicit approvals for human checkpoints.</li>
+            <li>Prefer readable diagnostics over cryptic parser noise.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <span class="label">Performance</span>
+          <h2>Fast means low language overhead.</h2>
+          <p>
+            GlowFlow is designed so runtime overhead stays small and predictable.
+            In real server use, most latency will come from AI providers, APIs,
+            disk I/O, and external tools. The language should not be the slow part.
+          </p>
+          <ul>
+            <li>Small scripts should start near-instantly.</li>
+            <li>Parse plus semantic checks should stay comfortably sub-second.</li>
+            <li>Simple webhook handlers without outside calls should return quickly.</li>
+            <li>The heavy time budget belongs to the external work being orchestrated.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <span class="label">Authoring Rules</span>
+          <h2>How to keep scripts maintainable.</h2>
+          <ol>
+            <li>Name variables after business meaning, not transport details.</li>
+            <li>Use tasks, functions, and tools to isolate repeated logic.</li>
+            <li>Prefer structured AI forms when output shape matters.</li>
+            <li>Persist important workflow artifacts explicitly with JSON, CSV, or files.</li>
+            <li>Use `approve` where the workflow crosses a human risk boundary.</li>
+            <li>Keep each file centered on one workflow or one capability boundary.</li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <span class="label">Release Boundaries</span>
+          <h2>What v1.0.1 proves.</h2>
+          <p>
+            GlowFlow v1.0.1 establishes GlowScript as a real, executable language
+            with a functioning runtime, a native build path, provider-backed AI
+            proof, HTTPS webhook transport, language-level error recovery, and
+            serious test coverage. It does not claim that every adapter,
+            integration, or operations edge case is already finished.
+          </p>
+          <ul>
+            <li>It proves GlowScript can be executed, tested, and built as a language.</li>
+            <li>It proves coverage across the CLI, parser, interpreter, runtime, and native parity path.</li>
+            <li>It is honest about the remaining work around the broader ecosystem.</li>
+          </ul>
+        </section>
+      </div>
+
+      <section class="card">
+        <span class="label">Short Definition</span>
+        <h2>The serious one-line description.</h2>
+        <p>
+          GlowScript is the scripting language for AI automation. GlowFlow is the
+          product, runtime, and documentation surface that makes that language
+          usable in real systems.
+        </p>
+      </section>
+
+      <div class="footer">
+        GlowFlow v1.0.1 handbook for GlowScript v1.0.1.
+      </div>
+    </div>
+  </body>
+</html>

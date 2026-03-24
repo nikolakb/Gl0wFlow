@@ -1,0 +1,33 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="64" y1="64" x2="448" y2="448" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#10182A"/>
+      <stop offset="1" stop-color="#0B0F19"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="118" y1="118" x2="394" y2="394" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4DE8FF"/>
+      <stop offset="0.55" stop-color="#9D4DFF"/>
+      <stop offset="1" stop-color="#FF7A00"/>
+    </linearGradient>
+    <radialGradient id="core" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(252 204) rotate(90) scale(150)">
+      <stop stop-color="#7FF5FF" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#7FF5FF" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="blur" x="0" y="0" width="512" height="512" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="24"/>
+    </filter>
+  </defs>
+  <rect x="44" y="44" width="424" height="424" rx="104" fill="url(#bg)"/>
+  <g filter="url(#blur)" opacity="0.9">
+    <circle cx="174" cy="164" r="86" fill="#4DE8FF"/>
+    <circle cx="346" cy="352" r="94" fill="#9D4DFF"/>
+    <circle cx="320" cy="194" r="86" fill="#FF7A00"/>
+  </g>
+  <rect x="44" y="44" width="424" height="424" rx="104" fill="url(#bg)" fill-opacity="0.78"/>
+  <path d="M118 270C118 188.814 183.814 123 265 123H320V175H265C212.533 175 170 217.533 170 270C170 322.467 212.533 365 265 365H320V417H265C183.814 417 118 351.186 118 270Z" fill="url(#glow)"/>
+  <path d="M114 102C128 113 133 129 133 149C133 169 128 185 114 197" stroke="#4DE8FF" stroke-opacity="0.34" stroke-width="10" stroke-linecap="round"/>
+  <path d="M399 102C385 113 380 129 380 149C380 169 385 185 399 197" stroke="#FF7A00" stroke-opacity="0.34" stroke-width="10" stroke-linecap="round"/>
+  <path d="M358 92L370 129L408 141L370 153L358 190L346 153L308 141L346 129L358 92Z" fill="white"/>
+  <path d="M358 104L367 132L396 141L367 150L358 178L349 150L320 141L349 132L358 104Z" fill="url(#glow)"/>
+  <circle cx="252" cy="204" r="118" fill="url(#core)"/>
+</svg>

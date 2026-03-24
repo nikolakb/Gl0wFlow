@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GlowFlow Test Proof</title>
+    <style>
+      :root {
+        --ink: #13211a;
+        --muted: #5f6f64;
+        --line: rgba(19, 33, 26, 0.12);
+        --panel: rgba(255, 255, 255, 0.76);
+        --accent: #ea6a32;
+        --green: #1f6248;
+        --code: #1b241e;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 12% 10%, rgba(234,106,50,0.16), transparent 24%),
+          radial-gradient(circle at 88% 12%, rgba(31,98,72,0.14), transparent 22%),
+          linear-gradient(180deg, #fff8ee 0%, #f5f0e8 52%, #edf4ef 100%);
+        font-family: Georgia, "Times New Roman", serif;
+      }
+
+      .shell {
+        width: min(1120px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 28px 0 56px;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: center;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .brand img {
+        width: 260px;
+        max-width: 52vw;
+        height: auto;
+        display: block;
+      }
+
+      .topbar nav {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.48);
+        border: 1px solid rgba(19, 33, 26, 0.08);
+        box-shadow: 0 12px 30px rgba(35, 28, 10, 0.06);
+      }
+
+      .topbar a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .hero,
+      .card {
+        margin-top: 18px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: var(--panel);
+        backdrop-filter: blur(10px);
+        box-shadow:
+          0 18px 60px rgba(35, 28, 10, 0.07),
+          inset 0 1px 0 rgba(255,255,255,0.36);
+      }
+
+      .hero {
+        padding: 34px;
+      }
+
+      .eyebrow {
+        display: inline-block;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(234,106,50,0.16), rgba(31,98,72,0.12));
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 0.78rem;
+        border: 1px solid rgba(234,106,50,0.12);
+      }
+
+      h1, h2, h3 {
+        margin: 0;
+        line-height: 0.96;
+      }
+
+      h1 {
+        margin-top: 16px;
+        font-size: clamp(2.7rem, 6vw, 5rem);
+      }
+
+      p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.68;
+      }
+
+      .hero p {
+        margin-top: 18px;
+        max-width: 54rem;
+        font-size: 1.08rem;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      .stat {
+        padding: 16px;
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,0.66);
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 1.5rem;
+      }
+
+      .stat span {
+        display: block;
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 0.93rem;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+
+      .card {
+        padding: 24px;
+      }
+
+      .label {
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      ul {
+        margin: 14px 0 0;
+        padding-left: 18px;
+        color: var(--muted);
+        line-height: 1.68;
+      }
+
+      pre {
+        margin: 14px 0 0;
+        padding: 18px;
+        border-radius: 18px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0)),
+          var(--code);
+        color: #f4f0e8;
+        overflow: auto;
+        white-space: pre-wrap;
+        line-height: 1.6;
+        font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+        font-size: 0.92rem;
+      }
+
+      .footer {
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: 0.94rem;
+        text-align: center;
+      }
+
+      @media (max-width: 900px) {
+        .grid,
+        .stats {
+          grid-template-columns: 1fr;
+        }
+
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .topbar nav {
+          width: 100%;
+          justify-content: space-between;
+          border-radius: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <div class="topbar">
+        <div class="brand">
+          <img src="./assets/glowflow-wordmark-dark.svg" alt="GlowFlow logo" />
+        </div>
+        <nav>
+          <a href="./index.html">Landing</a>
+          <a href="./demo.html">Demo</a>
+          <a href="./handbook.html">Handbook</a>
+          <a href="./speed.html">Speed</a>
+          <a href="./architecture.html">Architecture</a>
+          <a href="../README.md">README</a>
+        </nav>
+      </div>
+
+      <section class="hero">
+        <span class="eyebrow">Language Proof</span>
+        <h1>What the tests prove about GlowScript inside GlowFlow.</h1>
+        <p>
+          This is not just a repo health number. The test suite is the current
+          proof that GlowScript behaves like a real language: it accepts the
+          intended syntax, rejects invalid programs with beginner-friendly
+          diagnostics, evaluates workflow logic, preserves formatting, validates
+          AI contracts, resolves imports, and keeps native builds aligned with
+          interpreter behavior. For an AI automation language this is the
+          critical threshold: the idea has crossed into a proven executable
+          system.
+        </p>
+        <div class="stats">
+          <div class="stat">
+            <strong>v1.0.1</strong>
+            <span>current public release line</span>
+          </div>
+          <div class="stat">
+            <strong>9</strong>
+            <span>passing tests</span>
+          </div>
+          <div class="stat">
+            <strong>1</strong>
+            <span>internal regression test</span>
+          </div>
+          <div class="stat">
+            <strong>7</strong>
+            <span>v1.0.1 fix tests</span>
+          </div>
+          <div class="stat">
+            <strong>Full path</strong>
+            <span>check, inspect, run, build, native parity, and artifacts</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="grid">
+        <section class="card">
+          <div class="label">Syntax And Structure</div>
+          <h3>The mother test proves the language surface in one place.</h3>
+          <ul>
+            <li>The retained end-to-end scenario starts with real GlowScript source, not hand-built runtime calls.</li>
+            <li>`check` and `inspect` both run against that same source before execution begins.</li>
+            <li>This keeps the proof centered on the language itself rather than on isolated helper behavior.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <div class="label">Regression Safety</div>
+          <h3>One low-level parser edge is still protected directly.</h3>
+          <ul>
+            <li>The internal regression test protects webhook body parsing around request-line and `Content-Length` handling.</li>
+            <li>That bug was found during heavier runtime stress and kept as a direct unit-level guard.</li>
+            <li>So the suite still preserves one surgical test where a narrow failure mode matters.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <div class="label">Execution</div>
+          <h3>The end-to-end flow exercises real workflow behavior.</h3>
+          <ul>
+            <li>The mother flow runs imports, functions, tools, MCP filesystem access, `retry`, `parallel`, `every`, `approve`, `wait`, JSON, CSV, and file persistence.</li>
+            <li>It also verifies that the expected workflow artifacts are actually written.</li>
+            <li>This proves GlowScript is not only parseable; it is runnable across a serious mixed workflow.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <div class="label">AI Layer</div>
+          <h3>AI and tool orchestration are still part of the proof story.</h3>
+          <ul>
+            <li>The mother flow covers `extract`, `classify`, `rewrite`, and `decide` inside one executable scenario.</li>
+            <li>Separate live stress work also proved the local Ollama path for structured AI operations.</li>
+            <li>The public proof remains honest: the runtime is real even if the broader adapter ecosystem is still growing.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <div class="label">Build Parity</div>
+          <h3>Native output is compared directly against interpreter output.</h3>
+          <ul>
+            <li>The mother test builds a native runner for the same script it interprets.</li>
+            <li>The resulting stdout is compared directly for parity.</li>
+            <li>This is the strongest current automated proof that GlowScript behaves like one language across both execution paths.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <div class="label">Current Breakdown</div>
+          <pre>internal regression tests: 1
+mother end-to-end tests: 1
+v1.0.1 focused tests: 7
+total: 9</pre>
+        </section>
+      </div>
+
+      <section class="card">
+        <div class="label">Representative Guarantees</div>
+        <pre>GlowScript inside GlowFlow currently proves:
+
+- a real GlowScript file can be checked, inspected, run, and built end to end
+- native output matches interpreter output on the retained mother scenario
+- workflow artifacts are persisted as part of that scenario
+- one narrow runtime parser edge is protected with a direct regression test
+- recent manual stress work already covered formatter churn, webhook bursts, large payloads, deep imports, and local Ollama-backed AI proof</pre>
+      </section>
+
+      <footer class="footer">
+        GlowFlow v1.0.1 test proof page. Current suite: 9 passing tests centered on one mother end-to-end proof plus focused v1.0.1 regressions.
+      </footer>
+    </div>
+  </body>
+</html>

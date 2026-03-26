@@ -18,6 +18,7 @@ GlowScript's parser is intentionally built around a very small set of backbone w
 - `ask` invokes AI
 - `use` connects integrations such as MCP targets
 - `tool` defines reusable tool-shaped functions
+- `build agent` defines a high-level agent entry point
 
 That keeps the language readable while still covering most automation scripts.
 
@@ -53,6 +54,14 @@ Statements:
 - `reply <expr>`
 - `read json body`
 - `tool <name>` followed by `needs ...` and an indented block
+- `build agent <name>` followed by:
+  - `on webhook "..."`
+  - optional `use mcp ...`
+  - optional `memory session`
+  - optional `provider`, `model`, `retries`
+  - `system "..."`
+  - `user <expr>`
+  - `reply <expr>`
 - `return <expr>`
 - `export mcp tool <name>`
 
@@ -75,6 +84,16 @@ Expressions:
 - http responses are objects with `status`, `status_text`, `headers`, `body`, and `text`
 - env: `env "API_KEY"`
 - now, random, length
+- token analysis: `calculate tokens text`
+- advanced density scoring: `jerina probability density with 1.618`
+- retention sizing: `optimal allocation probability with 3.0`
+- text compaction: `collapse text to 0.45`
+  - current runtime keeps whole sentences and paragraph shape where possible
+- policy compression:
+  - `compress report into brief`
+  - supports `target` or `auto target`
+  - auto mode accepts `w_j` and `gain`
+  - supports `mode`, `preserve`, `keep`, and `require`
 - call tool: `call tool "filesystem.read_file" with {path: "notes.txt"}`
 - call function: `call function greet with {name: "Ana"}`
 - list tools
@@ -118,6 +137,66 @@ repeat 2 times
   say "Done"
 ```
 
+Agent example:
+
+```glow
+build agent support_bot
+  on webhook "/support"
+  use mcp filesystem
+  memory session
+  system "You are a helpful support assistant"
+  user body.message
+  reply result
+```
+
 ## MVP boundaries
 
-GlowScript currently favors a credible compiler core over a full production runtime. The local runtime now includes file, JSON, CSV, HTTP and HTTPS webhook handling, AI-command hooks, filesystem MCP tools, and first-class `try` / `catch` / `throw` / `recover`, while background scheduling and broader MCP adapters remain future work.
+GlowScript currently favors a credible compiler core over a full production runtime. The local runtime now includes file, JSON, CSV, HTTP and HTTPS webhook handling, AI-command hooks, filesystem MCP tools, first-class `try` / `catch` / `throw` / `recover`, and advanced context-control built-ins, while background scheduling and broader MCP adapters remain future work.
+
+## Structural allocation and telemetry
+
+GlowScript now also includes a small advanced context-control surface:
+
+- `calculate tokens text`
+- `jerina probability density with w_j`
+- `optimal allocation p with b`
+- `collapse text to f_star`
+- `compress value into name`
+  - `target <fraction>`
+  - `mode structural|semantic|agent-safe`
+  - `preserve:` block
+  - `keep:` block with `first sentence`, `last sentence`, `headings`
+  - `require:` block
+
+Example:
+
+```glow
+compress report into brief
+  auto target
+  w_j 1.618
+  gain 3.0
+  mode semantic
+  preserve:
+    summary
+    action items
+  keep:
+    first sentence
+    last sentence
+  require:
+    summary
+```
+
+The public contract is simple:
+- GlowScript can estimate a safe retention target automatically
+- GlowScript can preserve required content while reducing context size
+- the internal scoring model is intentionally treated as implementation detail
+
+This is intended for agent/runtime optimization flows where a script needs to estimate input density, pick a retention fraction, and compact text before handing it to another system.
+
+FastAPI telemetry does not require new syntax. Use the built-in HTTP `post` with a JSON-shaped object:
+
+```glow
+set telemetry to {endpoint: "/v1/chat/completions", retained_fraction: f_star, density_score: p_structural}
+set response to post "http://127.0.0.1:8010/telemetry" with telemetry
+say response.status
+```

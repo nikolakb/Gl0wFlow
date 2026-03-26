@@ -15,7 +15,7 @@ This document explains GlowScript as a language rather than as a product pitch. 
 - semantic checks
 - current capabilities and boundaries
 
-Version: `GlowFlow v1.0.1` / `GlowScript v1.0.1`
+Version: `GlowFlow v1.1.2` / `GlowScript v1.1.2`
 
 ## 1. Core Model
 
@@ -231,6 +231,10 @@ set email to body.email
 - `now`
 - `random`
 - `length value`
+- `calculate tokens value`
+- `jerina probability density with w_j`
+- `optimal allocation p with b`
+- `collapse text to fraction`
 - `list tools`
 
 ### Function and tool calls
@@ -310,6 +314,31 @@ Tasks are invoked with:
 ```glow
 run task sync_sales
 ```
+
+### Build agents
+
+GlowScript also supports high-level agent declarations.
+
+```glow
+build agent support_bot
+  on webhook "/support"
+  use mcp filesystem
+  memory session
+  system "You are a helpful support assistant"
+  user body.message
+  reply result
+```
+
+Current `build agent` semantics:
+
+- the trigger is currently `on webhook "..."`
+- `use mcp` activates tool targets for the agent runtime
+- `memory session` loads and stores lightweight session memory
+- `system`, `provider`, `model`, and `retries` configure the AI call
+- `user <expr>` becomes the prompt input
+- `reply <expr>` becomes the webhook response
+
+In the current runtime, `build agent` is intentionally compact and opinionated. It is a language-level shortcut for the common “AI webhook agent” shape, not a fully open-ended agent framework.
 
 ### Functions
 
@@ -607,11 +636,11 @@ parallel
   run task sync_inventory
 ```
 
-In the current `v1.0.1` runtime, `parallel` is grouped execution intent. It should be read as an orchestration primitive, not as a claim of fully general concurrent scheduling semantics.
+In the current `v1.1.2` runtime, `parallel` is grouped execution intent. It should be read as an orchestration primitive, not as a claim of fully general concurrent scheduling semantics.
 
 ## 16. Error Handling Semantics
 
-`v1.0.1` adds first-class error recovery.
+`v1.1.2` includes first-class error recovery.
 
 ### `throw`
 
@@ -665,6 +694,104 @@ Examples of things checked early:
 
 The goal is to produce beginner-readable diagnostics where possible, rather than low-level parser or runtime failures.
 
+## 18. Context Control Semantics
+
+GlowScript `v1.1.2` includes a small advanced context-control surface in the runtime.
+
+### `calculate tokens`
+
+```glow
+set raw_tokens to calculate tokens task_content
+```
+
+This returns a numeric token estimate based on whitespace-delimited segments. It is intentionally simple and deterministic.
+
+### `jerina probability`
+
+```glow
+set p_structural to jerina probability raw_tokens with 1.618
+```
+
+This computes an advanced density score using the runtime context-control engine.
+
+### `optimal allocation`
+
+```glow
+set f_star to optimal allocation p_structural with 3.0
+```
+
+This computes a safe retention fraction and clamps it into the runtime range.
+
+### `collapse`
+
+```glow
+set optimized_content to collapse task_content to f_star
+```
+
+Current runtime behavior:
+- preserves paragraph boundaries when possible
+- keeps whole sentences instead of cutting at raw word boundaries
+- guarantees at least the lead sentence of each retained paragraph
+- fills the remaining token budget deterministically in source order
+
+This is still a deterministic structural compressor, not semantic summarization.
+
+### `compress`
+
+```glow
+compress report into brief
+  auto target
+  w_j 1.618
+  gain 3.0
+  mode semantic
+  preserve:
+    summary
+    action items
+  keep:
+    first sentence
+    last sentence
+  require:
+    summary
+```
+
+Current runtime behavior:
+- `compress` is a first-class statement, not an expression helper
+- it writes the compressed result into the named output variable
+- it also updates `result`
+- `target` is a retention fraction between `0.05` and `1.0`
+- `auto target` derives the retention fraction from the input text using the runtime context-control engine
+- `w_j` and `gain` are advanced tuning inputs for that automatic path
+- `mode` can be `structural`, `semantic`, or `agent-safe`
+- `preserve` boosts sentences containing the listed phrases
+- `keep` can force `first sentence`, `last sentence`, and `headings`
+- `require` turns missing retained phrases into a readable runtime error
+- safe auto floors prevent over-compression:
+  - structural: at least `0.20`
+  - semantic: at least `0.30`
+  - agent-safe: at least `0.40`
+
+This makes compression a language-level policy surface instead of just a truncation helper.
+
+Publicly, the important contract is:
+- GlowScript can reduce context safely
+- GlowScript can preserve required material
+- GlowScript can auto-size retention conservatively when asked
+
+The internal scoring and allocation strategy is an implementation detail of the runtime.
+
+### Telemetry pattern
+
+GlowScript does not need a new telemetry keyword for this. The existing HTTP `post` form is enough.
+
+```glow
+set telemetry to {endpoint: "/v1/chat/completions", raw_tokens: raw_tokens, retained_fraction: f_star, density_score: p_structural}
+set response to post "http://127.0.0.1:8010/telemetry" with telemetry
+```
+
+The repo includes a FastAPI companion service in:
+
+- `telemetry/fastapi_proxy.py`
+
 ## 18. CLI Surface
 
 The project currently exposes these CLI entry points:
@@ -700,7 +827,7 @@ GlowScript can currently do all of the following in one language surface:
 
 ## 20. Current Boundaries
 
-GlowScript `v1.0.1` is serious and executable, but its claims are intentionally bounded.
+GlowScript `v1.1.2` is serious and executable, but its claims are intentionally bounded.
 
 It does **not** currently claim:
 

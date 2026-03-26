@@ -484,11 +484,7 @@ Phase 6:
 
 ## Build and run
 
-If Rust is available:
 
-```bash
-cargo run -- run examples/hello.glow
-cargo run -- serve examples/webhook_signup.glow 3000
-```
+
 
 `glow build` now emits a native binary when `rustc` is installed. If not, it falls back to the generated `.rs` file.

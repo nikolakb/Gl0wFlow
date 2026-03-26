@@ -1,4 +1,3 @@
-![Alt text](glowscript-icon-mono-dark.svg)
 # GlowFlow
 
 GlowFlow is the product and runtime surface for GlowScript, the scripting language for AI automation.
@@ -6,13 +5,25 @@ GlowFlow is the product and runtime surface for GlowScript, the scripting langua
 GlowFlow lets you build and present agents, workflows, webhook handlers, approvals, tool calls, and AI automations written in GlowScript.
 
 Current version:
-- GlowFlow v1.0.1
-- GlowScript v1.0.1
-- first public fix release with HTTPS webhooks and language-level error recovery
+- GlowFlow v1.1.2
+- GlowScript v1.1.2
+- release line with HTTPS webhooks, language-level error recovery, advanced context controls, `build agent`, and first-class `compress` blocks with safe auto-targeting
 
 Tagline:
 GlowFlow - Plain-English AI automation powered by GlowScript.
 
+Product pages:
+- [Landing page](./docs/index.html)
+- [Demo page](./docs/demo.html)
+- [Terminal demo page](./docs/terminal-demo.html)
+- [Handbook page](./docs/handbook.html)
+- [Semantics and reference (Markdown)](./docs/semantics.md)
+- [Semantics page (HTML)](./docs/semantics.html)
+- [Speed page](./docs/speed.html)
+- [Packages page](./docs/packages.html)
+- [Release checklist](./docs/release-checklist.md)
+- [Architecture page](./docs/architecture.html)
+- [Test proof page](./docs/tests.html)
 
 ## What It Is
 
@@ -91,16 +102,16 @@ Current MVP status:
 
 Version framing:
 
-- `v1.0.1` is the first fix release on top of the public `v1.0.0` line
-- it adds HTTPS webhook serving and first-class `try` / `catch` / `throw` / `recover`
+- `v1.1.2` extends the `v1.1.x` line with `build agent` for compact webhook-based AI agents and `compress ... into ...` for structure-aware context reduction with optional safe auto-targeting
+- it includes HTTPS webhook serving and first-class `try` / `catch` / `throw` / `recover`
 - it still does not claim full production hardening yet
 
 Test status:
 
-- 9 passing tests
+- 20 passing tests
 - 1 focused internal regression test protects a real webhook parsing edge case
 - 1 mother end-to-end test proves `check`, `inspect`, `run`, `build`, native parity, imports, files, JSON, CSV, tools, MCP filesystem access, and workflow artifact creation on a single serious scenario
-- 7 focused `v1.0.1` tests cover error handling, formatter round-trip, HTTPS TLS setup, and new examples
+- focused `v1.1.2` tests cover error handling, formatter round-trip, HTTPS TLS setup, advanced context controls, `build agent`, and the new `compress` block
 - recent stress passes also covered same-file formatter/build churn, webhook mutation, deep import chains, large JSON/CSV payloads, and repeated native parity
 - local Ollama-backed proof also covered real provider runs for `extract`, `classify`, `decide`, and `summarize`
 - the current proof surface is intentionally compact and centered on one full-language scenario plus focused regressions
@@ -116,6 +127,11 @@ The current runtime already supports real local execution for:
 - per-request webhook persistence with unique saved payload files
 - environment-based and provider-based AI execution
 - MCP-style filesystem tools and user-defined Glow tools
+- advanced context-control built-ins for token counting, automatic retention sizing, and deterministic content compression
+
+There is also an optional FastAPI telemetry companion in:
+
+- `telemetry/fastapi_proxy.py`
 
 ## Performance Targets
 
@@ -144,6 +160,18 @@ Or run the showcase:
 
 ```bash
 ./scripts/investor-demo.sh
+```
+
+Install from a Git repository:
+
+```bash
+./scripts/install-from-repo.sh https://github.com/nikolakb/Gl0wFlow.git [git-ref]
+```
+
+Install via curl once the script is published from your repo:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/nikolakb/Gl0wFlow/main/scripts/install-from-repo.sh | bash -s -- https://github.com/nikolakb/Gl0wFlow.git [git-ref]
 ```
 
 ## Syntax Rules
@@ -484,7 +512,11 @@ Phase 6:
 
 ## Build and run
 
+If Rust is available:
 
-
+```bash
+cargo run -- run examples/hello.glow
+cargo run -- serve examples/webhook_signup.glow 3000
+```
 
 `glow build` now emits a native binary when `rustc` is installed. If not, it falls back to the generated `.rs` file.

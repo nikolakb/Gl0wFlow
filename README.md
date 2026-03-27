@@ -1,3 +1,8 @@
+
+Try this markdown:
+
+![alt text](glowscript-icon.svg)
+
 # GlowFlow
 
 **Plain-English AI automation powered by GlowScript.**

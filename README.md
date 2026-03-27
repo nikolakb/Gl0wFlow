@@ -1,5 +1,4 @@
-
-Try this markdown:
+Welcome To Featured AI Script Language
 
 ![alt text](glowscript-icon.svg)
 

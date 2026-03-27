@@ -64,7 +64,7 @@
         <h1>Release packages for Windows x64, Linux x64, and macOS ARM.</h1>
         <p>
           GlowFlow ships as the `glow` CLI binary. The packaging flow builds a
-          standalone archive for each target platform so end users do not need
+          standalone package for each target platform so end users do not need
           Rust installed just to run GlowFlow.
         </p>
       </section>
@@ -72,8 +72,8 @@
       <div class="grid">
         <section class="card">
           <span class="label">Windows x64</span>
-          <h2>x86_64-pc-windows-gnu</h2>
-          <p>Archive format: `zip`</p>
+          <h2>x86_64-pc-windows-msvc</h2>
+          <p>Package formats: `zip` and `msi`</p>
         </section>
         <section class="card">
           <span class="label">Linux x64</span>
@@ -90,16 +90,26 @@
       <section class="card">
         <span class="label">Build Commands</span>
         <h2>Local packaging and CI packaging</h2>
-        <pre>./scripts/package-release.sh 1.0.1 aarch64-apple-darwin
-./scripts/package-release.sh 1.0.1 x86_64-unknown-linux-gnu
-./scripts/package-release.sh 1.0.1 x86_64-pc-windows-gnu
+        <pre>Local builds from macOS/Linux:
+./scripts/package-release.sh 1.1.2 aarch64-apple-darwin pkg
+./scripts/package-release.sh 1.1.2 x86_64-unknown-linux-gnu tar.gz
+./scripts/package-release.sh 1.1.2 x86_64-pc-windows-gnu zip
+
+Windows runner / CI builds:
+./scripts/package-release.sh 1.1.2 x86_64-pc-windows-msvc zip
+./scripts/package-release.sh 1.1.2 x86_64-pc-windows-msvc msi
 
 GitHub Actions workflow:
   .github/workflows/release-packages.yml</pre>
+        <p>
+          Release bundles include docs, examples, and the bundled
+          <code>gemini-cli/</code> helper directory so the Gemini MCP setup
+          instructions work from inside packaged builds too.
+        </p>
       </section>
 
       <div class="footer">
-        GlowFlow v1.0.1 packaging page for GlowScript v1.0.1.
+        GlowFlow v1.1.2 packaging page for GlowScript v1.1.2.
       </div>
     </div>
   </body>

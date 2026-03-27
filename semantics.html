@@ -64,7 +64,7 @@
 
       <section class="hero">
         <span class="eyebrow">Semantics</span>
-        <h1>The detailed semantics and capabilities of GlowScript v1.0.1.</h1>
+        <h1>The detailed semantics and capabilities of GlowScript v1.1.2.</h1>
         <p>
           This page explains the language as a language: what statements mean, how
           values flow, what the runtime guarantees, which operations are strict,
@@ -102,7 +102,7 @@
             <li>`repeat` loops numerically.</li>
             <li>`for each` requires a list.</li>
             <li>`retry` reruns a block until success or exhaustion.</li>
-            <li>`parallel` is grouped intent in v1.0.1, not true concurrent scheduling.</li>
+            <li>`parallel` is grouped intent in v1.1.2, not true concurrent scheduling.</li>
           </ul>
         </section>
 
@@ -150,7 +150,7 @@
 
         <section class="card">
           <span class="label">Errors</span>
-          <h2>v1.0.1 adds first-class recovery.</h2>
+          <h2>v1.1.2 includes first-class recovery.</h2>
           <ul>
             <li>`throw expr` raises a runtime error using the rendered value text.</li>
             <li>`try` / `catch error` catches runtime failures and binds the message to the catch variable.</li>
@@ -201,7 +201,7 @@ set status to get "http://127.0.0.1:9/health" recover {status: "offline"}</pre>
 
         <section class="card">
           <span class="label">Boundaries</span>
-          <h2>What v1.0.1 still does not claim.</h2>
+          <h2>What v1.1.2 still does not claim.</h2>
           <ul>
             <li>No daemon scheduler yet for true recurring background execution.</li>
             <li>No fully broad MCP ecosystem yet.</li>
@@ -212,7 +212,7 @@ set status to get "http://127.0.0.1:9/health" recover {status: "offline"}</pre>
       </div>
 
       <div class="footer">
-        GlowFlow v1.0.1 semantics page for GlowScript v1.0.1.
+        GlowFlow v1.1.2 semantics page for GlowScript v1.1.2.
       </div>
     </div>
   </body>

@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GlowFlow Speed</title>
+    <style>
+      :root {
+        --ink: #13211a;
+        --muted: #5f6f64;
+        --line: rgba(19, 33, 26, 0.12);
+        --panel: rgba(255, 255, 255, 0.78);
+        --accent: #ea6a32;
+        --code: #1b241e;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 12% 10%, rgba(234,106,50,0.16), transparent 24%),
+          radial-gradient(circle at 88% 12%, rgba(31,98,72,0.14), transparent 22%),
+          linear-gradient(180deg, #fff8ee 0%, #f5f0e8 52%, #edf4ef 100%);
+        font-family: Georgia, "Times New Roman", serif;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .shell {
+        width: min(1120px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 28px 0 56px;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: center;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .brand img {
+        width: 260px;
+        max-width: 52vw;
+        height: auto;
+        display: block;
+      }
+
+      .topbar nav {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.48);
+        border: 1px solid rgba(19, 33, 26, 0.08);
+        box-shadow: 0 12px 30px rgba(35, 28, 10, 0.06);
+      }
+
+      .hero,
+      .card {
+        margin-top: 18px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: var(--panel);
+        backdrop-filter: blur(10px);
+        box-shadow:
+          0 18px 60px rgba(35, 28, 10, 0.07),
+          inset 0 1px 0 rgba(255,255,255,0.36);
+      }
+
+      .hero,
+      .card {
+        padding: 28px;
+      }
+
+      .eyebrow {
+        display: inline-block;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(234,106,50,0.16), rgba(31,98,72,0.12));
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 0.78rem;
+        border: 1px solid rgba(234,106,50,0.12);
+      }
+
+      h1, h2, h3 {
+        margin: 0;
+        line-height: 0.96;
+      }
+
+      h1 {
+        margin-top: 16px;
+        font-size: clamp(2.8rem, 6vw, 5rem);
+      }
+
+      h2 {
+        font-size: 1.75rem;
+      }
+
+      p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .hero p,
+      .card p {
+        margin-top: 16px;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      .stat {
+        padding: 16px;
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,0.66);
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 1.42rem;
+      }
+
+      .stat span {
+        display: block;
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 0.93rem;
+        line-height: 1.45;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+
+      .label {
+        display: inline-block;
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      ul {
+        margin: 16px 0 0;
+        padding-left: 18px;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      pre {
+        margin: 16px 0 0;
+        padding: 18px;
+        border-radius: 18px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0)),
+          var(--code);
+        color: #f4f0e8;
+        overflow: auto;
+        white-space: pre-wrap;
+        line-height: 1.6;
+        font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+        font-size: 0.92rem;
+      }
+
+      .footer {
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: 0.94rem;
+        text-align: center;
+      }
+
+      @media (max-width: 900px) {
+        .grid,
+        .stats {
+          grid-template-columns: 1fr;
+        }
+
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .topbar nav {
+          width: 100%;
+          justify-content: space-between;
+          border-radius: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <div class="topbar">
+        <div class="brand">
+          <img src="./assets/glowflow-wordmark-dark.svg" alt="GlowFlow logo" />
+        </div>
+        <nav>
+          <a href="./index.html">Landing</a>
+          <a href="./handbook.html">Handbook</a>
+          <a href="./semantics.html">Semantics</a>
+          <a href="./architecture.html">Architecture</a>
+          <a href="./tests.html">Tests</a>
+          <a href="../README.md">README</a>
+        </nav>
+      </div>
+
+      <section class="hero">
+        <span class="eyebrow">Speed</span>
+        <h1>GlowFlow runtime overhead is small enough to stay out of the way.</h1>
+        <p>
+          These numbers were measured locally against the actual GlowFlow CLI and
+          native runner. The goal is not claiming impossible zero-latency automation.
+          The goal is showing that GlowScript itself is not the bottleneck.
+        </p>
+        <div class="stats">
+          <div class="stat">
+            <strong>3.13 ms</strong>
+            <span>Mean `glow check` time on `examples/hello.glow`.</span>
+          </div>
+          <div class="stat">
+            <strong>3.00 ms</strong>
+            <span>Mean `glow run` time on `examples/hello.glow`.</span>
+          </div>
+          <div class="stat">
+            <strong>2.99 ms</strong>
+            <span>Mean native runner startup time for the built `hello` binary.</span>
+          </div>
+          <div class="stat">
+            <strong>14.15 ms</strong>
+            <span>Mean localhost webhook roundtrip for a trivial POST handler.</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="grid">
+        <section class="card">
+          <span class="label">Measured Results</span>
+          <h2>Steady-state local timings</h2>
+          <pre>glow check examples/hello.glow
+mean   3.13 ms
+median 3.14 ms
+min    2.25 ms
+max    4.17 ms
+
+glow run examples/hello.glow
+mean   3.00 ms
+median 2.93 ms
+min    2.35 ms
+max    4.60 ms
+
+target/glow-build/hello
+mean   2.99 ms
+median 2.97 ms
+min    2.38 ms
+max    4.02 ms
+
+localhost webhook POST
+mean   14.15 ms
+median 12.92 ms
+min    12.11 ms
+max    32.46 ms</pre>
+        </section>
+
+        <section class="card">
+          <span class="label">Interpretation</span>
+          <h2>What these numbers mean</h2>
+          <ul>
+            <li>GlowFlow startup and local script execution are effectively instant to a human user.</li>
+            <li>The native runner path is in the same low-single-digit millisecond range.</li>
+            <li>The trivial webhook path is fast enough that GlowFlow itself is not the main cost center.</li>
+            <li>In real systems, total latency will mostly come from AI providers, APIs, files, and external tools.</li>
+          </ul>
+          <p>
+            That is the useful speed claim for this product: GlowFlow keeps
+            language overhead small and predictable, so the work being orchestrated
+            dominates the time budget instead of the language runtime itself.
+          </p>
+        </section>
+      </div>
+
+      <section class="card">
+        <span class="label">Practical Statement</span>
+        <h2>The short version</h2>
+        <p>
+          GlowFlow is already fast enough for server-side automation. The language
+          is not the bottleneck. AI calls, HTTP services, file I/O, and tool
+          integrations are the bottleneck.
+        </p>
+      </section>
+
+      <div class="footer">
+        GlowFlow v1.1.2 speed page for GlowScript v1.1.2.
+      </div>
+    </div>
+  </body>
+</html>

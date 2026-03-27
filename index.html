@@ -468,8 +468,8 @@
           </div>
           <div class="hero-stats">
             <div class="stat">
-              <strong>v1.0.1</strong>
-              <span>Fix release with HTTPS webhooks and first-class error recovery.</span>
+              <strong>v1.1.2</strong>
+              <span>Release line with HTTPS webhooks, error recovery, and advanced context-control built-ins.</span>
             </div>
             <div class="stat">
               <strong>Mother-proved</strong>
@@ -626,7 +626,7 @@ cargo run -- build examples/mother_of_all.glow
           <a class="card doc-link" href="./semantics.html">
             <span class="label">Semantics</span>
             <h3>Language Semantics</h3>
-            <p>The detailed reference for values, control flow, AI forms, runtime behavior, and v1.0.1 language boundaries.</p>
+            <p>The detailed reference for values, control flow, AI forms, runtime behavior, and v1.1.2 language boundaries.</p>
             <span class="go">Open semantics -></span>
           </a>
           <a class="card doc-link" href="./ai.md">
@@ -664,6 +664,12 @@ cargo run -- build examples/mother_of_all.glow
             <h3>Test Proof</h3>
             <p>The strongest current evidence that GlowScript behaves like a real language, not a toy syntax.</p>
             <span class="go">Open test proof -></span>
+          </a>
+          <a class="card doc-link" href="./gemini-cli.md">
+            <span class="label">Gemini CLI</span>
+            <h3>Gemini MCP Plugin</h3>
+            <p>Connect Gemini CLI to GlowFlow through the built-in stdio MCP server and exposed Glow tools.</p>
+            <span class="go">Open Gemini guide -></span>
           </a>
         </div>
       </section>
@@ -726,11 +732,12 @@ cargo run -- build examples/mother_of_all.glow
         <div class="grid">
           <div class="card">
             <span class="label">Language</span>
-            <h3>9 passing tests</h3>
+            <h3>41 passing tests</h3>
             <p>
               The public suite is intentionally compact: one full end-to-end
-              mother scenario, one narrow runtime regression test, and seven
-              focused v1.0.1 fix tests.
+              mother scenario, three library/runtime regression tests, and
+              thirty-seven focused v1.1.2 feature and fix tests, including
+              build-agent, compression policy, Gemini CLI MCP, list index coverage, explicit append semantics, for-each collection patterns, const reassignment protection, EOF-safe REPL startup, and const shadowing safety.
             </p>
           </div>
           <div class="card">
@@ -755,7 +762,7 @@ cargo run -- build examples/mother_of_all.glow
       </section>
 
       <footer class="footer">
-        GlowFlow v1.0.1 documentation hub for GlowScript v1.0.1. Start here, then move into the language, semantics, runtime, architecture, demo, and proof pages.
+        GlowFlow v1.1.2 documentation hub for GlowScript v1.1.2. Start here, then move into the language, semantics, runtime, architecture, demo, and proof pages.
       </footer>
     </div>
   </body>
